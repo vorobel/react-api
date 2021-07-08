@@ -23,14 +23,18 @@ export default class App extends Component {
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
-        let curStateDataCopy = [...this.state.booksData];
+        let curStateDataCopy = [];
         
         data.items.map((item) => {
+
           let curObj = {}
           curObj.bookTitle = item.volumeInfo.title;
           curObj.bookSubtitle = item.volumeInfo.title;
           curObj.bookImg = item.volumeInfo.imageLinks.smallThumbnail;
-          curObj.bookDescription = item.volumeInfo.description;          
+
+
+          curObj.bookDescription = item.volumeInfo.description;   
+
           curObj.publishedDate = item.volumeInfo.publishedDate;   
           curObj.authors = item.volumeInfo.authors;
 
@@ -60,7 +64,21 @@ export default class App extends Component {
             <h1 className="search-result__title">Search result:</h1>
             <ul className="search-result__items">
               {this.state.booksData.map((item, id) => {
-                return <li key={id}></li>
+                return (<li key={id}>
+                    <h2>{item.bookTitle}</h2>
+                    <p>{item.bookSubtitle}</p>
+                    <div className="bookContent">
+                      <div className="bookContent__img">
+                        <img src={item.bookImg} alt="book-img"></img>
+                      </div>
+                      <div className="bookContent__text">
+                        <p className="desc">{item.bookDescription}</p>
+                        <p>{item.publishedDate}</p>
+                        <p>{item.authors}</p>
+                      </div>
+                    </div>
+                    <button className="add-btn">Add</button>
+                  </li>)
               })}
             </ul>
           </div>
