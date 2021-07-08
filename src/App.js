@@ -15,24 +15,35 @@ export default class App extends Component {
 
 
 
-  handleClick(e) {
+  handleClick = (e) => {
     e.preventDefault();
+    let url = `https://www.googleapis.com/books/v1/volumes?q=${this.state.inputValue}:keyes&key=AIzaSyAiIeH1W2G39YWs3wlmpCD7m6SPXaK0vMI`;
 
-    fetch('https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=AIzaSyAiIeH1W2G39YWs3wlmpCD7m6SPXaK0vMI')
+    fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
         let curStateDataCopy = [...this.state.booksData];
-        let curBooksData = {
-          book: data.items.searchInfo.textSnippet
-        }
-        curStateDataCopy.push(curBooksData)
+        
+        data.items.map((item) => {
+          let curObj = {}
+          curObj.bookTitle = item.volumeInfo.title;
+          curObj.bookSubtitle = item.volumeInfo.title;
+          curObj.bookImg = item.volumeInfo.imageLinks.smallThumbnail;
+          curObj.bookDescription = item.volumeInfo.description;          
+          curObj.publishedDate = item.volumeInfo.publishedDate;   
+          curObj.authors = item.volumeInfo.authors;
+
+          curStateDataCopy.push(curObj)
+
+        })
+
         this.setState({...this.state, booksData: curStateDataCopy, inputValue: ''})
 
       })
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
     this.setState({...this.state, inputValue: e.target.value})
   }
  
@@ -48,7 +59,9 @@ export default class App extends Component {
           <div className="search-result">
             <h1 className="search-result__title">Search result:</h1>
             <ul className="search-result__items">
-
+              {this.state.booksData.map((item, id) => {
+                return <li key={id}></li>
+              })}
             </ul>
           </div>
           <div className="my-list">
