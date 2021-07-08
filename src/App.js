@@ -88,7 +88,26 @@ export default class App extends Component {
           <div className="my-list">
             <h1 className="my-list__title">My list:</h1>
             <ul className="my-list__items">
-
+              {this.state.booksData.map((item, id) => {
+                if(item.favorite) {
+                return (
+                  <li key={id}>
+                    <h2>{item.bookTitle}</h2>
+                    <p>{item.bookSubtitle}</p>
+                    <div className="bookContent">
+                      <div className="bookContent__img">
+                        <img src={item.bookImg} alt="book-img"></img>
+                      </div>
+                      <div className="bookContent__text">
+                        <p className="desc">{item.bookDescription}</p>
+                        <p>{item.publishedDate}</p>
+                        <p>{item.authors}</p>
+                      </div>
+                    </div>
+                    <button className="add-btn" onClick={this.handleFavorite} id={id}>Add</button>
+                  </li>)
+                } 
+              })}
             </ul>
           </div>
         </div>
