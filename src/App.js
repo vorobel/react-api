@@ -31,12 +31,10 @@ export default class App extends Component {
           curObj.bookTitle = item.volumeInfo.title;
           curObj.bookSubtitle = item.volumeInfo.title;
           curObj.bookImg = item.volumeInfo.imageLinks.smallThumbnail;
-
-
           curObj.bookDescription = item.volumeInfo.description;   
-
           curObj.publishedDate = item.volumeInfo.publishedDate;   
           curObj.authors = item.volumeInfo.authors;
+          curObj.favorite = false;
 
           curStateDataCopy.push(curObj)
 
@@ -49,6 +47,11 @@ export default class App extends Component {
 
   handleChange = (e) => {
     this.setState({...this.state, inputValue: e.target.value})
+  }
+
+  handleFavorite = (e) => {
+    this.state.booksData[e.target.id].favorite = !this.state.booksData[e.target.id].favorite;
+    console.log(this.state.booksData[e.target.id].favorite);
   }
  
 
@@ -77,7 +80,7 @@ export default class App extends Component {
                         <p>{item.authors}</p>
                       </div>
                     </div>
-                    <button className="add-btn">Add</button>
+                    <button className="add-btn" onClick={this.handleFavorite} id={id}>Add</button>
                   </li>)
               })}
             </ul>
